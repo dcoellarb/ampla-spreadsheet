@@ -96,7 +96,7 @@ function Spreadsheet() {
                         : processedCellValue
                     }
                     {hasError &&
-                        <S.TooltipText className="tooltiptext">Circular Refrence Found!</S.TooltipText>
+                        <S.TooltipText className="tooltiptext">Circular Reference Found!</S.TooltipText>
                     }
                 </S.CellContainer>
             </S.Cell>
