@@ -36,3 +36,54 @@
     transform: rotate(360deg);
   }
 }
+
+table {
+  position: relative;
+}
+
+table, th, td {
+  border: 1px solid lightsteelblue;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  min-width: 100px;
+}
+
+tr {
+  height: 40px;
+}
+
+input {
+  width: 90px;
+  border: 0px;
+}
+
+textarea:focus, input:focus{
+  outline: none;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 10px;
+  position: absolute;
+  z-index: 1;
+  top: -30px;
+  left: 0px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
