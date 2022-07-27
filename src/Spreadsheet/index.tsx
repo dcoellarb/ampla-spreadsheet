@@ -127,7 +127,7 @@ function Spreadsheet() {
             <S.TableHeader>
                 <S.HeaderRow>
                     <S.HeaderColumnCell key='headerRowCell'/>
-                    {alphabet.map((letter, letterIndex) => (
+                    {alphabet.map((letter) => (
                         <S.HeaderColumnCell key={letter}>{letter}</S.HeaderColumnCell>
                     ))}
                 </S.HeaderRow>
