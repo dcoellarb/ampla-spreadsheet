@@ -32,6 +32,10 @@ export const LinkText = styled.a`
 
 export const Table = styled.table``;
 
+export const TableHeader = styled.thead``;
+
+export const TableBody = styled.tbody``;
+
 export const HeaderRow = styled.tr`
     position: sticky;
     top: 0;

@@ -124,18 +124,22 @@ function Spreadsheet() {
             }
         </S.Header>
         <S.Table>
-        <S.HeaderRow>
-            <S.HeaderColumnCell key='headerRowCell'/>
-            {alphabet.map((letter, letterIndex) => (
-                <S.HeaderColumnCell key={letter}>{letter}</S.HeaderColumnCell>
-            ))}
-        </S.HeaderRow>
-        {data.map((row, rowIndex) => (
-            <S.Row key={rowIndex + 1}>
-                <S.HeaderRowCell>{rowIndex + 1}</S.HeaderRowCell>
-                {row.map((cellValue, cellIndex) => renderCell(cellValue, rowIndex, cellIndex))}
-            </S.Row>
-        ))}
+            <S.TableHeader>
+                <S.HeaderRow>
+                    <S.HeaderColumnCell key='headerRowCell'/>
+                    {alphabet.map((letter, letterIndex) => (
+                        <S.HeaderColumnCell key={letter}>{letter}</S.HeaderColumnCell>
+                    ))}
+                </S.HeaderRow>
+            </S.TableHeader>
+            <S.TableBody>
+                {data.map((row, rowIndex) => (
+                    <S.Row key={rowIndex + 1}>
+                        <S.HeaderRowCell>{rowIndex + 1}</S.HeaderRowCell>
+                        {row.map((cellValue, cellIndex) => renderCell(cellValue, rowIndex, cellIndex))}
+                    </S.Row>
+                ))}
+            </S.TableBody>
         </S.Table>
       </S.Root>
     );
