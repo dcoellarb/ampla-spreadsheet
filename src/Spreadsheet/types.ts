@@ -8,7 +8,8 @@ export interface ISelectedCell {
 }
 
 export interface IHeaderProps {
-    linkGeneratedCallback: (id: string) => void;
+    linkId?: string;
+    onGenerateLink: () => void;
 }
 
 export interface ICellProps {
@@ -16,7 +17,7 @@ export interface ICellProps {
     rowIndex: number;
     cellIndex: number;
     cellValue: string;
-    selectedCell: ISelectedCell | undefined;
+    selectedCell?: ISelectedCell;
     selectedCellValue: string;
     setSelectedCellValue: React.Dispatch<React.SetStateAction<string>>;
     onSelectCell: (rowIndex: number, cellIndex: number) => void;

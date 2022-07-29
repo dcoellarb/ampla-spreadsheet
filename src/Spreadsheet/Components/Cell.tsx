@@ -17,12 +17,6 @@ function Spreadsheet({
     
     const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-    useEffect(() => {
-        if (inputRef.current) { 
-            console.log('entro')
-        }
-    }, [inputRef.current !== undefined])
-
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedCellValue(e.target.value);
     }
@@ -34,7 +28,12 @@ function Spreadsheet({
     return (
         <S.Cell
             key={cellIndex}
-            onClick={() => onSelectCell(rowIndex, cellIndex)}
+            onClick={() => {
+                onSelectCell(rowIndex, cellIndex)
+                setTimeout(() => {
+                    inputRef.current.focus();
+                }, 300)
+            }}
             selected={selectedCell?.row === rowIndex && selectedCell?.column === cellIndex}
         >
             <S.CellContainer className={hasError ? 'tooltip' : ''}>

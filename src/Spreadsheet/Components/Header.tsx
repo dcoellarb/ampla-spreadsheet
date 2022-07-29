@@ -1,32 +1,12 @@
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
 import * as S from './../style';
 import { IHeaderProps } from './../types';
 import { useParams } from "react-router-dom";
 
-function Header({ linkGeneratedCallback }: IHeaderProps) {
-    const [linkId, setLinkId] = useState<string>()
+function Header({ linkId, onGenerateLink }: IHeaderProps) {
     const [linkCopied, setLinkCopied] = useState<boolean>(false)
-        
-    let { spreadsheetId } = useParams();
     
-    // Load from spreadsheetId on url
-    useEffect(() => {
-        if (spreadsheetId) {
-            setLinkId(spreadsheetId)
-        }
-    }, [spreadsheetId])
-
-    /* Handler methods */
-
-    const onGenerateLink = () => {
-        const id = uuidv4();
-        setLinkId(id);
-        linkGeneratedCallback(id);
-    }
-
     /* Rendering methods */
-
     const url = linkId ? `http://localhost:3000/spreadsheets/${linkId}` : undefined
     return (
         <S.Header>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import Header from './Components/Header';
 import Cell from './Components/Cell'
 import { alphabet, getDefaultData } from "./Utils/data";
@@ -10,6 +11,7 @@ function Spreadsheet() {
     const [data, setData] = useState<IData>(getDefaultData())
     const [selectedCell, setSelectedCell] = useState<ISelectedCell>()
     const [selectedCellValue, setSelectedCellValue] = useState<string>('')
+    const [linkId, setLinkId] = useState<string>()
         
     let { spreadsheetId } = useParams();
 
@@ -18,6 +20,7 @@ function Spreadsheet() {
         if (spreadsheetId) {
             const localData = localStorage.getItem(spreadsheetId);
             if (localData) setData(JSON.parse(localData));
+            setLinkId(spreadsheetId)
         }
     }, [spreadsheetId])
 
@@ -41,6 +44,9 @@ function Spreadsheet() {
           
           // Clear Selected cell
           setSelectedCell(undefined);
+
+          // Update local storage
+          if (linkId) localStorage.setItem(linkId, JSON.stringify(updaedData));
         }
     }
 
@@ -51,14 +57,16 @@ function Spreadsheet() {
         setSelectedCellValue(data[rowIndex][cellIndex] ? data[rowIndex][cellIndex] : '')
     }
 
-    const onGenerateLink = (id: string) => {
+    const onGenerateLink = () => {
+        const id = uuidv4();
         localStorage.setItem(id, JSON.stringify(data));
+        setLinkId(id);
     }
 
     /* Rendering methods */
     return (
       <S.Root>
-        <Header linkGeneratedCallback={onGenerateLink} />
+        <Header linkId={linkId} onGenerateLink={onGenerateLink} />
         <S.Table>
             <S.TableHeader>
                 <S.HeaderRow>
