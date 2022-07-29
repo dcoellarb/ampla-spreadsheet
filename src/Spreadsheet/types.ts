@@ -12,11 +12,19 @@ export interface IHeaderProps {
     onGenerateLink: () => void;
 }
 
-export interface ICellProps {
-    data: IData;
+export interface IRowProps {
     rowIndex: number;
-    cellIndex: number;
+    row: Array<string>;
+    selectedCell?: ISelectedCell;
+    selectedCellValue: string;
+    setSelectedCellValue: React.Dispatch<React.SetStateAction<string>>;
+    onSelectCell: (rowIndex: number, cellIndex: number) => void;
+    saveCellValue: () => void;
+}
+export interface ICellProps {
+    rowIndex: number;
     cellValue: string;
+    cellIndex: number;
     selectedCell?: ISelectedCell;
     selectedCellValue: string;
     setSelectedCellValue: React.Dispatch<React.SetStateAction<string>>;

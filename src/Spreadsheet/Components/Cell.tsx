@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { processCellValue } from "./../Utils/data";
+import React, { useRef } from "react";
 import * as S from './../style';
 import { ICellProps } from "../types";
 
-function Spreadsheet({ 
-    data,
+const MemoizedCell = React.memo(function Cell({ 
     rowIndex,
-    cellIndex,
     cellValue,
+    cellIndex,
     selectedCell,
     selectedCellValue,
     setSelectedCellValue,
@@ -21,18 +19,18 @@ function Spreadsheet({
         setSelectedCellValue(e.target.value);
     }
 
-    const processedCellValue = processCellValue(cellValue, data);
-    const hasError = processedCellValue === '⚠ ERROR';
+    const hasError = cellValue === '⚠ ERROR';
 
     /* Rendering methods */
+    console.log('render cell')
     return (
         <S.Cell
             key={cellIndex}
             onClick={() => {
                 onSelectCell(rowIndex, cellIndex)
                 setTimeout(() => {
-                    inputRef.current.focus();
-                }, 300)
+                    inputRef.current && inputRef.current.focus();
+                }, 400)
             }}
             selected={selectedCell?.row === rowIndex && selectedCell?.column === cellIndex}
         >
@@ -46,7 +44,7 @@ function Spreadsheet({
                         onKeyPress={(e) => e.key === 'Enter' ? saveCellValue() : undefined}
                         onBlur={saveCellValue}
                         />
-                    : processedCellValue
+                    : cellValue
                 }
                 {hasError &&
                     <S.TooltipText className="tooltiptext">Circular Reference Found!</S.TooltipText>
@@ -54,6 +52,19 @@ function Spreadsheet({
             </S.CellContainer>
         </S.Cell>
     );
-  }
+  }, (prevProps: ICellProps, nextProps: ICellProps) => {
+    const isSameData = prevProps.cellValue === nextProps.cellValue;
+    const isStillSelected =
+        prevProps.selectedCell !== undefined && prevProps.selectedCell.row === prevProps.rowIndex && prevProps.selectedCell.column === prevProps.cellIndex && // If i was selected 
+        nextProps.selectedCell !== undefined && nextProps.selectedCell.row === nextProps.rowIndex && nextProps.selectedCell.column === nextProps.cellIndex // and still am
+    const isStillNotSelected =
+        (!prevProps.selectedCell || prevProps.selectedCell.row !== prevProps.rowIndex || prevProps.selectedCell.column !== prevProps.cellIndex) && // If i was not selected 
+        (!nextProps.selectedCell || nextProps.selectedCell.row !== nextProps.rowIndex || nextProps.selectedCell.column !== nextProps.cellIndex) // and still not
+    const isSameSelectionState = isStillSelected || isStillNotSelected;
+    const isInputValueNotChange = prevProps.selectedCellValue === nextProps.selectedCellValue; // selected cell value changed
+    const isInputNotChanged = isStillNotSelected || (isStillSelected && isInputValueNotChange); // not selected or if selected value is the same
+    const isEqual = isSameData && isSameSelectionState && isInputNotChanged;
+    return isEqual;
+  });
   
-  export default Spreadsheet;
+  export default MemoizedCell;

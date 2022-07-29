@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import Header from './Components/Header';
-import Cell from './Components/Cell'
-import { alphabet, getDefaultData } from "./Utils/data";
+import Row from './Components/Row'
+import { alphabet, getDefaultData, processCellValue } from "./Utils/data";
 import * as S from './style';
 import { IData, ISelectedCell } from "./types";
 import { useParams } from "react-router-dom";
@@ -64,6 +64,7 @@ function Spreadsheet() {
     }
 
     /* Rendering methods */
+    const processedData = data.map(row => row.map(cellValue => processCellValue(cellValue, data)))
     return (
       <S.Root>
         <Header linkId={linkId} onGenerateLink={onGenerateLink} />
@@ -77,23 +78,17 @@ function Spreadsheet() {
                 </S.HeaderRow>
             </S.TableHeader>
             <S.TableBody>
-                {data.map((row, rowIndex) => (
-                    <S.Row key={rowIndex + 1}>
-                        <S.HeaderRowCell>{rowIndex + 1}</S.HeaderRowCell>
-                        {row.map((cellValue, cellIndex) => (
-                            <Cell
-                                data={data}
-                                rowIndex={rowIndex}
-                                cellIndex={cellIndex}
-                                cellValue={cellValue}
-                                selectedCell={selectedCell}
-                                selectedCellValue={selectedCellValue}
-                                setSelectedCellValue={setSelectedCellValue}
-                                onSelectCell={onSelectCell}
-                                saveCellValue={saveCellValue}
-                            />
-                        ))}
-                    </S.Row>
+                {processedData.map((row, rowIndex) => (
+                    <Row
+                        key={rowIndex}
+                        rowIndex={rowIndex}
+                        row={row}
+                        selectedCell={selectedCell}
+                        selectedCellValue={selectedCellValue}
+                        setSelectedCellValue={setSelectedCellValue}
+                        onSelectCell={onSelectCell}
+                        saveCellValue={saveCellValue}
+                    />
                 ))}
             </S.TableBody>
         </S.Table>
